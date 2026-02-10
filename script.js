@@ -1,3 +1,6 @@
+console.log("Convogoal JS loaded");
+alert("JS is running");
+
 const elements = {
   navMenuBtn: document.getElementById('nav-menu-btn'),
   navbarMobile: document.getElementById('navbar-mobile'),
