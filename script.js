@@ -766,38 +766,7 @@ function initializeSuggestions() {
     const block = createSuggestionBlock(suggestions, true);
     elements.suggestionsContainer.appendChild(block);
   });
-}
 
-function showAuth() {
-  elements.authSection.classList.remove('hidden');
-  elements.appSection.classList.add('hidden');
-  allGoals = [];
-  currentUser = null;
-}
-
-elements.showSignup.addEventListener('click', switchToSignup);
-elements.showLogin.addEventListener('click', switchToLogin);
-elements.signupBtn.addEventListener('click', handleSignup);
-elements.loginBtn.addEventListener('click', handleLogin);
-elements.logoutBtn.addEventListener('click', handleLogout);
-elements.addGoalBtn.addEventListener('click', handleAddGoal);
-
-elements.goalInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    handleAddGoal();
-  }
-});
-
-elements.loginEmail.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    handleLogin();
-  }
-});
-
-elements.loginPassword.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    handleLogin();
-  }
 });
 
 elements.signupEmail.addEventListener('keypress', (e) => {
