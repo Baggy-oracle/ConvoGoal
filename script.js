@@ -1,34 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-let currentUser = null;
-let currentFilter = 'all';
-let allGoals = [];
-let conversationLineId = 0;
-
 const elements = {
   navMenuBtn: document.getElementById('nav-menu-btn'),
   navbarMobile: document.getElementById('navbar-mobile'),
-  authSection: document.getElementById('auth-section'),
-  appSection: document.getElementById('app-section'),
-  loginForm: document.getElementById('login-form'),
-  signupForm: document.getElementById('signup-form'),
-  loginEmail: document.getElementById('login-email'),
-  loginPassword: document.getElementById('login-password'),
-  loginBtn: document.getElementById('login-btn'),
-  signupEmail: document.getElementById('signup-email'),
-  signupPassword: document.getElementById('signup-password'),
-  signupBtn: document.getElementById('signup-btn'),
-  showSignup: document.getElementById('show-signup'),
-  showLogin: document.getElementById('show-login'),
-  authError: document.getElementById('auth-error'),
-  signupError: document.getElementById('signup-error'),
-  logoutBtn: document.getElementById('logout-btn'),
-  userEmail: document.getElementById('user-email'),
   goalInput: document.getElementById('goal-input'),
   addGoalBtn: document.getElementById('add-goal-btn'),
   goalsContainer: document.getElementById('goals-container'),
@@ -414,90 +386,6 @@ function showError(element, message) {
   setTimeout(() => {
     element.textContent = '';
   }, 5000);
-}
-
-function switchToSignup() {
-  elements.loginForm.classList.add('hidden');
-  elements.signupForm.classList.remove('hidden');
-  elements.authError.textContent = '';
-}
-
-function switchToLogin() {
-  elements.signupForm.classList.add('hidden');
-  elements.loginForm.classList.remove('hidden');
-  elements.signupError.textContent = '';
-}
-
-async function handleSignup() {
-  const email = elements.signupEmail.value.trim();
-  const password = elements.signupPassword.value;
-
-  if (!email || !password) {
-    showError(elements.signupError, 'Please fill in all fields');
-    return;
-  }
-
-  if (password.length < 6) {
-    showError(elements.signupError, 'Password must be at least 6 characters');
-    return;
-  }
-
-  elements.signupBtn.disabled = true;
-  elements.signupBtn.textContent = 'Creating account...';
-
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password
-  });
-
-  elements.signupBtn.disabled = false;
-  elements.signupBtn.textContent = 'Sign Up';
-
-  if (error) {
-    showError(elements.signupError, error.message);
-    return;
-  }
-
-  if (data.user) {
-    elements.signupEmail.value = '';
-    elements.signupPassword.value = '';
-  }
-}
-
-async function handleLogin() {
-  const email = elements.loginEmail.value.trim();
-  const password = elements.loginPassword.value;
-
-  if (!email || !password) {
-    showError(elements.authError, 'Please fill in all fields');
-    return;
-  }
-
-  elements.loginBtn.disabled = true;
-  elements.loginBtn.textContent = 'Signing in...';
-
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  elements.loginBtn.disabled = false;
-  elements.loginBtn.textContent = 'Sign In';
-
-  if (error) {
-    showError(elements.authError, error.message);
-    return;
-  }
-
-  if (data.user) {
-    elements.loginEmail.value = '';
-    elements.loginPassword.value = '';
-  }
-}
-
-async function handleLogout() {
-  await supabase.auth.signOut();
-}
 
 async function loadGoals() {
   if (!currentUser) return;
